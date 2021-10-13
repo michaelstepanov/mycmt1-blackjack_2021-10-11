@@ -11,8 +11,7 @@ public class Game {
     private final Deck deck;
     private final Hand playerHand = new Hand();
     private final Hand dealerHand = new Hand();
-    private int balance;
-    private int bet;
+    private final GameWallet gameWallet = new GameWallet();
 
     public static void main(String[] args) {
         Game game = new Game();
@@ -62,19 +61,19 @@ public class Game {
     private void displayOutcome(boolean playerBusted) {
         if (playerBusted) {
             System.out.println("You Busted, so you lose.  💸");
-            //playerLoses();
+            gameWallet.playerLoses();
         } else if (dealerHand.isBust()) {
             System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
-            //playerWins();
+            gameWallet.playerWins();
         } else if (playerHand.beats(dealerHand)) {
             System.out.println("You beat the Dealer! 💵");
-            //playerWins();
+            gameWallet.playerWins();
         } else if (playerHand.pushes(dealerHand)) {
             System.out.println("Push: You tie with the Dealer. 💸");
-            //playerPushes();
+            gameWallet.playerPushes();
         } else {
             System.out.println("You lost to the Dealer. 💸");
-            //playerLoses();
+            gameWallet.playerLoses();
         }
     }
 
@@ -126,10 +125,7 @@ public class Game {
 
     private void displayGameState() {
         displayDealerFaceUpCard();
-
-        // second card is the hole card, which is hidden
         displayBackOfCard();
-
         displayPlayerHand();
     }
 
@@ -170,21 +166,5 @@ public class Game {
         System.out.println("Dealer has: ");
         dealerHand.display();
         System.out.println(" (" + dealerHand.value() + ")");
-    }
-
-    public int playerBalance() { return balance;
-    }
-
-    public void playerDeposits(int amount) {
-         this.balance = amount;
-    }
-
-    public void playerBets(int amount) {
-         this.bet = amount;
-         this.balance -= amount;
-    }
-
-    public void playerWins() {
-        this.balance += bet * 2;
     }
 }
